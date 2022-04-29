@@ -16,7 +16,7 @@ zoom: 12
 //}
  
 map.on('load', () => {
-  let filterScore = ['<=', ['number', ['get', 'PCI_2018']], 20];
+  let filterScore = ['<=', ['number', ['get', 'PCI_2018']], 40]; // set filter by default on scores 40 or lower
  
 // Add a new layer to visualize the hexbins.
 map.addLayer({
