@@ -77,12 +77,34 @@ map.addLayer({
     map.setFilter('PCI2018_mb', ['<=', ['number', ['get', 'PCI_2018']], PCI]);
 
 
-    // update text in the UI
-    document.getElementById(PCI).innerText;
-  
-
+    // update text in the UI - still working on this
+    document.getElementById(score).innerText;
     });
 
 
+// When a click event occurs on a feature in the states layer,
+// open a popup at the location of the click, with description
+// HTML from the click event's properties.
+
+
+map.on('click', 'PCI2018_mb', (e) => {
+  new mapboxgl.Popup()
+  .setLngLat(e.lngLat)
+  .setHTML(e.features[0].properties.PCI_2018)
+  .addTo(map);
+  });
+   
+  // Change the cursor to a pointer when
+  // the mouse is over the states layer.
+  map.on('mouseenter', 'PCI2018_mb-layer', () => {
+  map.getCanvas().style.cursor = 'pointer';
+  });
+   
+  // Change the cursor back to a pointer
+  // when it leaves the states layer.
+  map.on('mouseleave', 'states-PCI2018_mb', () => {
+  map.getCanvas().style.cursor = '';
+  });
+  
 
   })
