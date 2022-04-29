@@ -9,39 +9,23 @@ zoom: 12
 });
  
  
-function filterBy(PCI_2018) {
-const filters = ['==', 'PCI_2018', PCI_2018];
-map.setFilter('PCI2018_mb', filters);
- 
+//function filterBy(PCI_2018) {
+//const filters = ['<=', 'PCI_2018', PCI_2018];
+//map.setFilter('PCI2018_mb', filters);
 
-}
+//}
  
 map.on('load', () => {
-
-  // When the map loads, add the data for hexbins
-  map.addSource('allHex_mb', {
-    'type': 'geojson',
-    'data': 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson',
-    'generateId': true
-  });
-
-
-
-  // When the map loads, add the data for the road segements and pci
-  map.addSource('PCI2018_mb', {
-    'type': 'geojson',
-    'data': 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/PCI2018_mb.geojson',
-    'generateId': true // This ensures that all features have unique IDs
-  });
-
-
-
-   
+  let filterScore = ['<=', ['number', ['get', 'PCI_2018']], 20];
+ 
 // Add a new layer to visualize the hexbins.
 map.addLayer({
   'id': 'equity',
   'type': 'fill',
-  'source': 'allHex_mb',
+  'source': {
+    type: 'geojson',
+    data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
+  },
   'paint': {
   // Color bins by total_equity, using a `match` expression.
   'fill-color': [
@@ -62,25 +46,41 @@ map.addLayer({
   'fill-opacity': 0.5,
   }
   });
-
  
+
+
 map.addLayer({
   'id': 'PCI2018_mb',
   'type': 'line',
-  'source': 'PCI2018_mb',
+  'source': {
+    type: 'geojson',
+    data:'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/PCI2018_mb.geojson'
+  },
   'paint': {
-    'line-width': 4,
+    'line-width': 3,
     'line-color': '#585858'
   },
   'layout': {
   'line-join': 'round',
   'line-cap': 'round'
-  }
+  },
+  'filter': ['all', filterScore]
+
+  
 });
 
+// update score filter when slider is dragged
   document.getElementById('slider').addEventListener('input', (e) => {
-    const PCI_2018 = parseInt(e.target.value, 10);
-    filterBy(PCI_2018);
+    const PCI = parseInt(e.target.value);
+    // update the map
+    filterScore = ['<=', ['number', ['get', 'PCI_2018']], PCI];
+    map.setFilter('PCI2018_mb', ['<=', ['number', ['get', 'PCI_2018']], PCI]);
+
+
+    // update text in the UI
+    document.getElementById(PCI).innerText;
+  
+
     });
 
 
