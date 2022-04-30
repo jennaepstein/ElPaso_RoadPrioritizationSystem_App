@@ -18,6 +18,7 @@ zoom: 12
 map.on('load', () => {
   let filterScore = ['<=', ['number', ['get', 'PCI_2018']], 40]; // set filter by default on scores 40 or lower
  
+
 // Add a new layer to visualize the hexbins.
 map.addLayer({
   'id': 'equity',
@@ -77,10 +78,9 @@ map.addLayer({
     map.setFilter('PCI2018_mb', ['<=', ['number', ['get', 'PCI_2018']], PCI]);
 
 
-    // update text in the UI - still working on this
-    document.getElementById(score).innerText;
-    });
-
+  // Set the label to the month
+  document.getElementById('score').textContent = PCI;
+  });
 
 // When a click event occurs on a feature in the states layer,
 // open a popup at the location of the click, with description

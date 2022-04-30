@@ -46,12 +46,16 @@ body {
     width: 100%;
   }
 
-
-  .label {
-    width: 15%;
+  .label-left {
     font-size: 12px;
-    display: inline-block;
-    text-align: center;
+    float: left;
+    position: inherit;
+  }
+
+  .label-right {
+    font-size: 12px;
+    float: right;
+    position: inherit;
   }
 
   .mapboxgl-popup {

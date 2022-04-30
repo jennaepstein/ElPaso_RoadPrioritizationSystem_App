@@ -21,30 +21,28 @@
     
     <div class='session'>
       <h2>Filter by PCI Score</h2>
-        <p><small><em>Pavement Condition Index (PCI) score is...(add definition blurb)</em></small></p>
-        <div class = 'row labels'>
-          <div class='label'>0</div>
-          <div class='label'>20</div>
-          <div class='label'>40</div>
-          <div class='label'>60</div>
-          <div class='label'>80</div>
-          <div class='label'>100</div>
-        </div>
+        <p><small><em>Pavement Conditions Index (PCI) scores are based off of factors such as presence of potholes, bumps, or cracks. The index ranges from a qualitative scale of Failing to Good or quantitatively 1 to 100.
+          Typically there is a significant drop in condition of a road after a certain amount of time.
+          </em></small></p>
+        
   <label id="score"></label>
-  <input id="slider" class='row' type="range" min="1" max="100" step="1" value="40">
+  <input id="slider" class='row' type="range" min="1" max="100" step="1" value="40"> 
+  <div class = 'row'><span>
+    <div class='label-left'>1</div>
+    <div class='label-right'>100</div></span>
+  </div>
   </div>
 
 
 <div class="map-overlay-inner">
   
 
-
-<div id="legend" class="legend">
+<!--<div id="legend" class="legend">
   <div class="bar"></div>
   <div>Score</div>
   </div>
    
-  </div>
+  </div> -->
   </div>
  
   <script src="script.js"></script>
