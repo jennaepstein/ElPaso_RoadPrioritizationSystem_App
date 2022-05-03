@@ -14,8 +14,13 @@ map.addControl(new mapboxgl.NavigationControl());
 
 
 map.on('load', () => {
-  let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set PCI filter by default on scores 40 or lower
- 
+
+const popup = new mapboxgl.Popup({ closeOnClick: false })
+.setLngLat([-106.4850,31.7619])
+.setHTML('<h2>Welcome to the El Paso Road Pavement Conditions Explorer! This tool was created for the Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System">here.</a></h2>')
+.addTo(map);
+
+let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set PCI filter by default on scores 40 or lower
 
 // Add a new layer to visualize the hexbins for EQUITY
  map.addLayer({
@@ -144,8 +149,6 @@ map.addLayer({
 
   
 });
-
-
 
 
 //PCI SCORE FILTERING
