@@ -17,7 +17,7 @@ map.on('load', () => {
 
 const popup = new mapboxgl.Popup({ closeOnClick: false })
 .setLngLat([-106.4850,31.7619])
-.setHTML('<h2>Welcome to the El Paso Road Pavement Conditions Explorer! This tool was created for the Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System">here.</a></h2>')
+.setHTML('<h2>Welcome to the El Paso Road Pavement Conditions Explorer!This tool was created for the Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System">here.</a></h2>')
 .addTo(map);
 
 let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set PCI filter by default on scores 40 or lower
@@ -172,7 +172,7 @@ map.addLayer({
 map.on('click', 'PCI2021_predictions', (e) => {
   new mapboxgl.Popup()
   .setLngLat(e.lngLat)
-  .setHTML(e.features[0].properties.PCI_2021)
+  .setHTML(`<h3>Street Name: ${e.features[0].properties.STREETNAME}</h3><h3>PCI: ${e.features[0].properties.PCI_2021}</h3><h3>Class: ${e.features[0].properties.CLASS}</h3><h3>Plan Area: ${e.features[0].properties.PLANAREA}</h3><h3>District: ${e.features[0].properties.DISTRICT}</h3>`)
   .addTo(map);
   });
    
