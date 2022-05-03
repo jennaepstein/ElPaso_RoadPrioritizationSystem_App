@@ -12,13 +12,13 @@ zoom: 12
 map.addControl(new mapboxgl.NavigationControl());
 //map.addControl(new mapboxgl.FullscreenControl());
 
- 
+
 map.on('load', () => {
-  let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set filter by default on scores 40 or lower
+  let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set PCI filter by default on scores 40 or lower
  
 
 // Add a new layer to visualize the hexbins for EQUITY
-const equity = map.addLayer({
+ map.addLayer({
   'id': 'equity',
   'type': 'fill',
   'source': {
@@ -51,7 +51,7 @@ const equity = map.addLayer({
  
 
   // Add a new layer to visualize the hexbins for CONGESTION (waze jams)
-const congestion = map.addLayer({
+map.addLayer({
   'id': 'congestion',
   'type': 'fill',
   'filter': ['>=', 'waze_count', 0],
@@ -188,16 +188,16 @@ map.on('click', 'PCI2021_predictions', (e) => {
 
   })
 
+ 
 
-
-
-
-   // After the last frame rendered before the map enters an "idle" state.
+// After the last frame rendered before the map enters an "idle" state.
    map.on('idle', () => {
     // If these two layers were not added to the map, abort
     if (!map.getLayer('equity') || !map.getLayer('congestion') || !map.getLayer('safety')) {
         return;
     }
+
+
 
     // Enumerate ids of the layers.
     const toggleableLayerIds = ['equity', 'congestion', 'safety'];
@@ -214,7 +214,7 @@ map.on('click', 'PCI2021_predictions', (e) => {
         link.id = id;
         link.href = '#';
         link.textContent = id;
-        link.className = 'active';
+        link.className = '';
 
         // Show or hide layer when the toggle is clicked.
         link.onclick = function (e) {
@@ -232,7 +232,7 @@ map.on('click', 'PCI2021_predictions', (e) => {
                 map.setLayoutProperty(clickedLayer, 'visibility', 'none');
                 this.className = '';
             } else {
-                this.className = 'active';
+                this.className = '';
                 map.setLayoutProperty(
                     clickedLayer,
                     'visibility',
@@ -246,16 +246,13 @@ map.on('click', 'PCI2021_predictions', (e) => {
 
     
     }
+    
 
-    /*NEED TO MAKE THE LEGENDS ATTACH TO EACH LAYER AND ONLY SHOW ONE WHEN IS ACTIVE...BUT RIGHT NOW CAN'T ISOLATE ONLY ONE LAYER ACTIVE AT A TIME...
+    /*NEED TO MAKE THE LEGENDS ATTACH TO EACH LAYER AND ONLY SHOW ONE WHEN IS ACTIVE...BUT RIGHT NOW CAN'T ISOLATE ONLY ONE LAYER ACTIVE AT A TIME...*/
 const equityLegendEl = document.getElementById('equity-legend');
 const congestionLegendEl = document.getElementById('congestion-legend');
 //const safetyLegendEl = document.getElementById('safety-legend');
 equityLegendEl.appendChild(link);
 congestionLegendEl.appendChild(link);
-
-*/
 });
-
-    
 
