@@ -10,10 +10,12 @@
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
 
+
   </head>
   <body>
 
-   
+
+
   <div id="map"></div>
   <div id="console">
     <h1>El Paso Pavement Conditions Explorer</h1>
@@ -31,20 +33,38 @@
     <div class='label-left'>1</div>
     <div class='label-right'>100</div></span>
   </div>
-  </div>
 
+  </div>
+  <div id="menu"></div>
 
 <div class="map-overlay-inner">
   
 
-<!--<div id="legend" class="legend">
-  <div class="bar"></div>
-  <div>Score</div>
-  </div>
+
    
-  </div> -->
   </div>
- 
+  </div>
+  <div id="legend" class="legend">
+    <div class="bar"></div>
+    <div>Score</div>
+    </div>
+
+  <div id="equity-legend" class="legend">
+    <h4>Equity</h4>
+    <div><span style="background-color: #A50026"></span>Highest Need</div>
+    <div><span style="background-color: #FDB366"></span>High Need</div>
+    <div><span style="background-color: #EAECCC"></span>Moderate Need</div>
+    <div><span style="background-color: #98CAE1"></span>Low Need</div>
+    <div><span style="background-color: #4A7BB7"></span>Very Low Need</div>
+    </div>
+
+
+    <!--needs styling-->
+    <div id="congestion-legend" class="legend">
+      <div class="bar"></div>
+      <div>Congestion</div>
+      </div>
+
   <script src="script.js"></script>
 </body>
 </html>

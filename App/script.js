@@ -8,24 +8,25 @@ center: [ -106.4850,31.7619],
 zoom: 12
 });
  
- 
-//function filterBy(PCI_2018) {
-//const filters = ['<=', 'PCI_2018', PCI_2018];
-//map.setFilter('PCI2018_mb', filters);
 
-//}
+map.addControl(new mapboxgl.NavigationControl());
+//map.addControl(new mapboxgl.FullscreenControl());
+
  
 map.on('load', () => {
-  let filterScore = ['<=', ['number', ['get', 'PCI_2018']], 40]; // set filter by default on scores 40 or lower
+  let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set filter by default on scores 40 or lower
  
 
-// Add a new layer to visualize the hexbins.
+// Add a new layer to visualize the hexbins for EQUITY
 map.addLayer({
   'id': 'equity',
   'type': 'fill',
   'source': {
     type: 'geojson',
     data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
+  },
+  'layout' : {
+    'visibility': 'visible' // make layer visible by default
   },
   'paint': {
   // Color bins by total_equity, using a `match` expression.
@@ -49,13 +50,86 @@ map.addLayer({
   });
  
 
+  // Add a new layer to visualize the hexbins for CONGESTION (waze jams)
+map.addLayer({
+  'id': 'congestion',
+  'type': 'fill',
+  'filter': ['>=', 'waze_count', 0],
+  'source': {
+    type: 'geojson',
+    data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
+  },
+  'layout' : {
+    'visibility': 'none' // make layer not visible by default
+  },
+  'paint': {
+    'fill-color': [
+    'interpolate',
+    ['linear'],
+    ['get', 'waze_count'],
+    0,
+    '#ffffff',
+    1,
+    '#ffffd4',
+    20,
+    '#fee391',
+    40,
+    '#fec44f',
+    60,
+    '#fe9929',
+    80,
+    '#d95f0e',
+    100,
+    '#993404'
+    ],
+    'fill-opacity': 0.70
+    }
+  });
+
+
+  // Add a new layer to visualize the hexbins for SAFETY  (CRASH COUNT)
+  map.addLayer({
+    'id': 'safety',
+    'type': 'fill',
+    'filter': ['>=', 'crash_count', 0],
+    'source': {
+      type: 'geojson',
+      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
+    },
+    'layout' : {
+      'visibility': 'none' // make layer not visible by default
+    },
+    'paint': {
+      'fill-color': [
+      'interpolate',
+      ['linear'],
+      ['get', 'crash_count'],
+      0,
+      '#ffffff',
+      1,
+      '#eff3ff',
+      20,
+      '#c6dbef',
+      40,
+      '#9ecae1',
+      60,
+      '#6baed6',
+      80,
+      '#3182bd',
+      100,
+      '#08519c'
+      ],
+      'fill-opacity': 0.70
+      }
+    });
+
 
 map.addLayer({
-  'id': 'PCI2018_mb',
+  'id': 'PCI2021_predictions',
   'type': 'line',
   'source': {
     type: 'geojson',
-    data:'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/PCI2018_mb.geojson'
+    data:'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/PCI2021_predictions.geojson'
   },
   'paint': {
     'line-width': 3,
@@ -70,12 +144,16 @@ map.addLayer({
   
 });
 
+
+
+
+//PCI SCORE FILTERING
 // update score filter when slider is dragged
   document.getElementById('slider').addEventListener('input', (e) => {
     const PCI = parseInt(e.target.value);
     // update the map
-    filterScore = ['<=', ['number', ['get', 'PCI_2018']], PCI];
-    map.setFilter('PCI2018_mb', ['<=', ['number', ['get', 'PCI_2018']], PCI]);
+    filterScore = ['<=', ['number', ['get', 'PCI_2021']], PCI];
+    map.setFilter('PCI2021_predictions', ['<=', ['number', ['get', 'PCI_2021']], PCI]);
 
 
   // Set the label to the month
@@ -87,24 +165,97 @@ map.addLayer({
 // HTML from the click event's properties.
 
 
-map.on('click', 'PCI2018_mb', (e) => {
+map.on('click', 'PCI2021_predictions', (e) => {
   new mapboxgl.Popup()
   .setLngLat(e.lngLat)
-  .setHTML(e.features[0].properties.PCI_2018)
+  .setHTML(e.features[0].properties.PCI_2021)
   .addTo(map);
   });
    
   // Change the cursor to a pointer when
   // the mouse is over the states layer.
-  map.on('mouseenter', 'PCI2018_mb-layer', () => {
+  map.on('mouseenter', 'PCI2021_predictions', () => {
   map.getCanvas().style.cursor = 'pointer';
   });
    
   // Change the cursor back to a pointer
   // when it leaves the states layer.
-  map.on('mouseleave', 'states-PCI2018_mb', () => {
+  map.on('mouseleave', 'PCI2021_predictions', () => {
   map.getCanvas().style.cursor = '';
   });
   
 
   })
+
+
+
+
+
+   // After the last frame rendered before the map enters an "idle" state.
+   map.on('idle', () => {
+    // If these two layers were not added to the map, abort
+    if (!map.getLayer('equity') || !map.getLayer('congestion') || !map.getLayer('safety')) {
+        return;
+    }
+
+    // Enumerate ids of the layers.
+    const toggleableLayerIds = ['equity', 'congestion', 'safety'];
+
+    // Set up the corresponding toggle button for each layer.
+    for (const id of toggleableLayerIds) {
+        // Skip layers that already have a button set up.
+        if (document.getElementById(id)) {
+            continue;
+        }
+
+        // Create a link.
+        const link = document.createElement('a');
+        link.id = id;
+        link.href = '#';
+        link.textContent = id;
+        link.className = 'active';
+
+        // Show or hide layer when the toggle is clicked.
+        link.onclick = function (e) {
+            const clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const visibility = map.getLayoutProperty(
+                clickedLayer,
+                'visibility'
+            );
+
+            // Toggle layer visibility by changing the layout object's visibility property.
+            if (visibility === 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(
+                    clickedLayer,
+                    'visibility',
+                    'visible'
+                );
+            }
+        };
+
+        const layers = document.getElementById('menu');
+        layers.appendChild(link);
+
+    
+    }
+
+
+    /*NEED TO MAKE THE LEGENDS ATTACH TO EACH LAYER AND ONLY SHOW ONE WHEN IS ACTIVE...BUT RIGHT NOW CAN'T ISOLATE ONLY ONE LAYER ACTIVE AT A TIME...
+const equityLegendEl = document.getElementById('equity-legend');
+const congestionLegendEl = document.getElementById('congestion-legend');
+//const safetyLegendEl = document.getElementById('safety-legend');
+equityLegendEl.appendChild(link);
+congestionLegendEl.appendChild(link);
+
+*/
+});
+
+    
+
