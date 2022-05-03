@@ -18,7 +18,7 @@ map.on('load', () => {
  
 
 // Add a new layer to visualize the hexbins for EQUITY
-map.addLayer({
+const equity = map.addLayer({
   'id': 'equity',
   'type': 'fill',
   'source': {
@@ -51,7 +51,7 @@ map.addLayer({
  
 
   // Add a new layer to visualize the hexbins for CONGESTION (waze jams)
-map.addLayer({
+const congestion = map.addLayer({
   'id': 'congestion',
   'type': 'fill',
   'filter': ['>=', 'waze_count', 0],
@@ -124,6 +124,7 @@ map.addLayer({
     });
 
 
+    //add PCI
 map.addLayer({
   'id': 'PCI2021_predictions',
   'type': 'line',
@@ -245,7 +246,6 @@ map.on('click', 'PCI2021_predictions', (e) => {
 
     
     }
-
 
     /*NEED TO MAKE THE LEGENDS ATTACH TO EACH LAYER AND ONLY SHOW ONE WHEN IS ACTIVE...BUT RIGHT NOW CAN'T ISOLATE ONLY ONE LAYER ACTIVE AT A TIME...
 const equityLegendEl = document.getElementById('equity-legend');
