@@ -12,12 +12,61 @@ zoom: 12
 map.addControl(new mapboxgl.NavigationControl());
 //map.addControl(new mapboxgl.FullscreenControl());
 
+const rtoggle = 'equity' // It's the checked radio selection
+// add navigational control
+
+
+// define variables
+const layerList = document.getElementById('menu');
+const inputs = layerList.getElementsByTagName('input');
+const equityLegendEl = document.getElementById('equity-legend');
+const congestionLegendEl = document.getElementById('congestion-legend');
+const safetyLegendEl = document.getElementById('safety-legend');
+
+// define functions
+function switchLayer(layer) {
+  let layerId = layer.target.id;
+    // set layer id to a menu value
+    // If id = equity
+       if (layerId == 'equity') {
+          map.setLayoutProperty('equity', 'visibility', 'visible');
+          map.setLayoutProperty('congestion', 'visibility', 'none');
+          map.setLayoutProperty('safety', 'visibility', 'none');
+          equityLegendEl.style.display = 'block';
+          congestionLegendEl.style.display = 'none';
+          safetyLegendEl.style.display = 'none';
+        }
+        // If id = congestion
+       if (layerId == 'congestion') {
+         map.setLayoutProperty('equity', 'visibility', 'none');
+         map.setLayoutProperty('congestion', 'visibility', 'visible');
+         map.setLayoutProperty('safety', 'visibility', 'none');
+         equityLegendEl.style.display = 'none';
+         congestionLegendEl.style.display = 'block';
+         safetyLegendEl.style.display = 'none';
+        }
+       // Else id = safety
+       else {
+         map.setLayoutProperty('equity', 'visibility', 'none');
+         map.setLayoutProperty('congestion', 'visibility', 'none');
+         map.setLayoutProperty('safety', 'visibility', 'visible');
+        equityLegendEl.style.display = 'none';
+        congestionLegendEl.style.display = 'none';
+        safetyLegendEl.style.display = 'block';
+       }
+}
+
+for (let i = 0; i < inputs.length; i++) {
+    inputs[i].onclick = switchLayer;
+}
+
+
 
 map.on('load', () => {
 
 const popup = new mapboxgl.Popup({ closeOnClick: false })
 .setLngLat([-106.4850,31.7619])
-.setHTML('<h2>Welcome to the El Paso Road Pavement Conditions Explorer!This tool was created for the Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System">here.</a></h2>')
+.setHTML('<big><h2>Welcome to the El Paso Road Pavement Conditions Explorer!</h2> <p>This tool was created for the Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System">here.</a></p></big>')
 .addTo(map);
 
 let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set PCI filter by default on scores 40 or lower
@@ -30,9 +79,8 @@ let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set PCI filter
     type: 'geojson',
     data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
   },
-  'layout' : {
-    'visibility': 'visible' // make layer visible by default
-  },
+  'layout': {'visibility': 'visible'},
+  
   'paint': {
   // Color bins by total_equity, using a `match` expression.
   'fill-color': [
@@ -64,9 +112,7 @@ map.addLayer({
     type: 'geojson',
     data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
   },
-  'layout' : {
-    'visibility': 'none' // make layer not visible by default
-  },
+  'layout': {'visibility': 'none'},
   'paint': {
     'fill-color': [
     'interpolate',
@@ -100,10 +146,9 @@ map.addLayer({
     'source': {
       type: 'geojson',
       data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
+    
     },
-    'layout' : {
-      'visibility': 'none' // make layer not visible by default
-    },
+    'layout': {'visibility': 'none'},
     'paint': {
       'fill-color': [
       'interpolate',
@@ -160,9 +205,13 @@ map.addLayer({
     map.setFilter('PCI2021_predictions', ['<=', ['number', ['get', 'PCI_2021']], PCI]);
 
 
-  // Set the label to the month
+  // Set the label to the score
   document.getElementById('score').textContent = PCI;
   });
+
+
+
+  
 
 // When a click event occurs on a feature in the states layer,
 // open a popup at the location of the click, with description
@@ -189,73 +238,13 @@ map.on('click', 'PCI2021_predictions', (e) => {
   });
   
 
-  })
+
 
  
 
-// After the last frame rendered before the map enters an "idle" state.
-   map.on('idle', () => {
-    // If these two layers were not added to the map, abort
-    if (!map.getLayer('equity') || !map.getLayer('congestion') || !map.getLayer('safety')) {
-        return;
-    }
-
-
-
-    // Enumerate ids of the layers.
-    const toggleableLayerIds = ['equity', 'congestion', 'safety'];
-
-    // Set up the corresponding toggle button for each layer.
-    for (const id of toggleableLayerIds) {
-        // Skip layers that already have a button set up.
-        if (document.getElementById(id)) {
-            continue;
-        }
-
-        // Create a link.
-        const link = document.createElement('a');
-        link.id = id;
-        link.href = '#';
-        link.textContent = id;
-        link.className = '';
-
-        // Show or hide layer when the toggle is clicked.
-        link.onclick = function (e) {
-            const clickedLayer = this.textContent;
-            e.preventDefault();
-            e.stopPropagation();
-
-            const visibility = map.getLayoutProperty(
-                clickedLayer,
-                'visibility'
-            );
-
-            // Toggle layer visibility by changing the layout object's visibility property.
-            if (visibility === 'visible') {
-                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                this.className = '';
-            } else {
-                this.className = '';
-                map.setLayoutProperty(
-                    clickedLayer,
-                    'visibility',
-                    'visible'
-                );
-            }
-        };
-
-        const layers = document.getElementById('menu');
-        layers.appendChild(link);
 
     
-    }
     
 
-    /*NEED TO MAKE THE LEGENDS ATTACH TO EACH LAYER AND ONLY SHOW ONE WHEN IS ACTIVE...BUT RIGHT NOW CAN'T ISOLATE ONLY ONE LAYER ACTIVE AT A TIME...*/
-const equityLegendEl = document.getElementById('equity-legend');
-const congestionLegendEl = document.getElementById('congestion-legend');
-//const safetyLegendEl = document.getElementById('safety-legend');
-equityLegendEl.appendChild(link);
-congestionLegendEl.appendChild(link);
 });
 

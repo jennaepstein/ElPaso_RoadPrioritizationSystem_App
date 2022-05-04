@@ -48,9 +48,19 @@ crossorigin=""></script>
   </div>
 
   </div>
-  <div id="menu"></div>
+  <!--<div id="menu"></div>-->
 
+  <div id='menu'>
 
+    <legend></legend>
+    <input id='equity' type='radio' name='rtoggle' value='equity' checked='checked'>
+    <label for='equity'>Equity <br><small>description</small></html></label><br><br>
+    <input id='congestion' type='radio' name='rtoggle' value='congestion' >
+    <label for='congestion'>congestion<br><small>description</small></html></label><br><br>
+    <input id='safety' type='radio' name='rtoggle' value='safety'>
+    <label for='safety'>safety<br><small>description</small></html></label><br><br>
+
+</div>
 
 
 <div class="map-overlay-inner">
@@ -60,10 +70,7 @@ crossorigin=""></script>
    
   </div>
   </div>
-  <div id="legend" class="legend">
-    <div class="bar"></div>
-    <div>Score</div>
-    </div>
+
 
   <div id="equity-legend" class="legend">
     <h4>Equity</h4>
@@ -75,11 +82,8 @@ crossorigin=""></script>
     </div>
 
 
-    <!--needs styling-->
-    <div id="congestion-legend" class="legend">
-      <div class="bar"></div>
-      <div>Congestion</div>
-      </div>
+
+
 
   <script src="script.js"></script>
 </body>
