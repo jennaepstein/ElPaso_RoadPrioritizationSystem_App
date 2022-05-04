@@ -3,18 +3,27 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiamVubmFlcHN0ZWluIiwiYSI6ImNsMmdyc3Z5dzA2ejAza
 
 const map = new mapboxgl.Map({
 container: 'map',
-style: 'mapbox://styles/mapbox/light-v10',
+style: 'mapbox://styles/mapbox/light-v10', // TO DO - REPLACE WITH OUR OWN STYLE THAT MINIMIZES CITY LABEL OPACITY
 center: [ -106.4850,31.7619], 
 zoom: 12
 });
- 
 
-map.addControl(new mapboxgl.NavigationControl());
-//map.addControl(new mapboxgl.FullscreenControl());
 
-const rtoggle = 'equity' // It's the checked radio selection
-// add navigational control
+//Adding geocoding - NEED TO REPLACE WITH A KEY, ETC THAT ALLOWS FOR MORE CALLS, IF POSSIBLE.
+    map.addControl(
+      new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl
+      })
+      );
 
+// Add navigational control
+map.addControl(new mapboxgl.NavigationControl()); 
+
+
+
+// Layer toggles work
+const rtoggle = 'equity' // This is the checked radio selection for equity 
 
 // define variables
 const layerList = document.getElementById('menu');
@@ -22,6 +31,7 @@ const inputs = layerList.getElementsByTagName('input');
 const equityLegendEl = document.getElementById('equity-legend');
 const congestionLegendEl = document.getElementById('congestion-legend');
 const safetyLegendEl = document.getElementById('safety-legend');
+const floodriskLegendEl = document.getElementById('floodrisk-legend');
 
 // define functions
 function switchLayer(layer) {
@@ -32,9 +42,11 @@ function switchLayer(layer) {
           map.setLayoutProperty('equity', 'visibility', 'visible');
           map.setLayoutProperty('congestion', 'visibility', 'none');
           map.setLayoutProperty('safety', 'visibility', 'none');
+          map.setLayoutProperty('floodrisk', 'visibility', 'none');
           equityLegendEl.style.display = 'block';
           congestionLegendEl.style.display = 'none';
           safetyLegendEl.style.display = 'none';
+          floodriskLegendEl.style.display = 'none';
         }
         // If id = congestion
        if (layerId == 'congestion') {
@@ -44,16 +56,31 @@ function switchLayer(layer) {
          equityLegendEl.style.display = 'none';
          congestionLegendEl.style.display = 'block';
          safetyLegendEl.style.display = 'none';
+         floodriskLegendEl.style.display = 'none';
         }
-       // Else id = safety
-       else {
+       // If id = safety
+       if (layerId == 'safety') {
          map.setLayoutProperty('equity', 'visibility', 'none');
          map.setLayoutProperty('congestion', 'visibility', 'none');
          map.setLayoutProperty('safety', 'visibility', 'visible');
+         map.setLayoutProperty('floodrisk', 'visibility', 'none');
         equityLegendEl.style.display = 'none';
         congestionLegendEl.style.display = 'none';
         safetyLegendEl.style.display = 'block';
+        floodriskLegendEl.style.display = 'none';
        }
+
+      // Else id = floodrisk
+        else {
+          map.setLayoutProperty('equity', 'visibility', 'none');
+          map.setLayoutProperty('congestion', 'visibility', 'none');
+          map.setLayoutProperty('safety', 'visibility', 'none');
+          map.setLayoutProperty('floodrisk', 'visibility', 'visible');
+          equityLegendEl.style.display = 'none';
+          congestionLegendEl.style.display = 'none';
+          safetyLegendEl.style.display = 'none';
+          floodriskLegendEl.style.display = 'block';
+        }
 }
 
 for (let i = 0; i < inputs.length; i++) {
@@ -70,6 +97,15 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
 .addTo(map);
 
 let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set PCI filter by default on scores 40 or lower
+
+
+
+
+map.addSource('floodrisk', {
+  type: 'vector',
+  url: 'mapbox://jennaepstein.2akxfysx'
+  });
+
 
 // Add a new layer to visualize the hexbins for EQUITY
  map.addLayer({
@@ -174,6 +210,19 @@ map.addLayer({
     });
 
 
+ // Add a new layer to visualize the flood risk areas
+ map.addLayer({
+  'id': 'floodrisk',
+  'type': 'fill',
+  'source': 'floodrisk',
+  'source-layer': 'PrelimFloodZone2020-9ov2ny',
+  'layout': {'visibility': 'none'},
+  'paint': {
+    'fill-color': '#008080',
+    'fill-opacity': 0.5
+  }
+  });
+
     //add PCI
 map.addLayer({
   'id': 'PCI2021_predictions',
@@ -213,7 +262,7 @@ map.addLayer({
 
   
 
-// When a click event occurs on a feature in the states layer,
+// When a click event occurs on a feature in the  layer,
 // open a popup at the location of the click, with description
 // HTML from the click event's properties.
 
@@ -221,7 +270,7 @@ map.addLayer({
 map.on('click', 'PCI2021_predictions', (e) => {
   new mapboxgl.Popup()
   .setLngLat(e.lngLat)
-  .setHTML(`<h3>Street Name: ${e.features[0].properties.STREETNAME}</h3><h3>PCI: ${e.features[0].properties.PCI_2021}</h3><h3>Class: ${e.features[0].properties.CLASS}</h3><h3>Plan Area: ${e.features[0].properties.PLANAREA}</h3><h3>District: ${e.features[0].properties.DISTRICT}</h3>`)
+  .setHTML(`<strong>Street Name: </strong>${e.features[0].properties.STREETNAME}<br><strong>Predicted 2021 PCI: </strong>${e.features[0].properties.PCI_2021}<br><strong>Street Class: </strong>${e.features[0].properties.CLASS}<br><strong>Plan Area: </strong>${e.features[0].properties.PLANAREA}<br><strong>District: </strong>${e.features[0].properties.DISTRICT}`)
   .addTo(map);
   });
    
@@ -243,7 +292,6 @@ map.on('click', 'PCI2021_predictions', (e) => {
  
 
 
-    
     
 
 });

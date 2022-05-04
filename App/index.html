@@ -18,11 +18,12 @@ crossorigin=""/>
 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
 crossorigin=""></script>
 
-
-
   </head>
   <body>
 
+    <!-- Load the `mapbox-gl-geocoder` plugin. -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
 
   <div id="map"></div>
@@ -32,13 +33,11 @@ crossorigin=""></script>
     <p><small>Please use the slider and layer buttons below to adjust the information displayed on the map to the right. 
       This tool serves to assist the Capital Improvements Department in prioritizing road repair projects by overlaying pavement conditions scores on different
       layers of interest.
-    </small></p>
+    </small></p><hr>
     
     <div class='session'>
-      <h2>Filter by PCI Score</h2>
-        <p><small><em>Pavement Conditions Index (PCI) scores are based off of factors such as presence of potholes, bumps, or cracks. The index ranges from a qualitative scale of Failing to Good or quantitatively 1 to 100.
-          Typically there is a significant drop in condition of a road after a certain amount of time.
-          </em></small></p>
+      <h2>Filter by Predicted 2021 PCI Score</h2>
+        <p><small><em>Pavement Conditions Index (PCI) scores are informed by factors such as presence of potholes, bumps, or cracks. The index ranges from a scale of Failing (1) to Good (100).</em></small></p>
         
   <label id="score"></label>
   <input id="slider" class='row' type="range" min="1" max="100" step="1" value="40"> 
@@ -52,23 +51,21 @@ crossorigin=""></script>
 
   <div id='menu'>
 
-    <legend></legend>
+    <h2>Select a Layer</h2>
     <input id='equity' type='radio' name='rtoggle' value='equity' checked='checked'>
-    <label for='equity'>Equity <br><small>description</small></html></label><br><br>
+    <label for='equity'>Equity<br><p class="layer-desc">The City of El Paso aggregated housing, education, accessibility, and income data to estimate comparative need throughout the city. This layer is borrowed from the <a href="https://coepgis.maps.arcgis.com/apps/MapSeries/index.html?appid=cba3ae8ce4db4079b4d723cd22a99a4a">CIP Policy Components online map</a>.
+    </p></label><br>
     <input id='congestion' type='radio' name='rtoggle' value='congestion' >
-    <label for='congestion'>congestion<br><small>description</small></html></label><br><br>
+    <label for='congestion'>Congestion<br><p class="layer-desc">Traffic congestion is estimated using self-reported 2021 jam data from a third party app, Waze.</p></label><br>
     <input id='safety' type='radio' name='rtoggle' value='safety'>
-    <label for='safety'>safety<br><small>description</small></html></label><br><br>
+    <label for='safety'>Safety<br><p class="layer-desc">Safety is represented by the number of vehicle crashes that occurred in each area from 2019 through April 2021, according to <a href="https://www.txdot.gov/driver/safety/crash-reports.html">TxDOT</a></p></label><br>
+    <input id='floodrisk' type='radio' name='rtoggle' value='floodrisk'>
+    <label for='floodrisk'>High Flood Risk<br><p class="layer-desc">FEMA released <a href="https://www.elpasotexas.gov/planning-and-inspections/flood-zones-2/flood-zones/">preliminary flood maps updated for the City of El Paso></a>. Roads that intersect high risk areas may be inundated and need more repairs during heavy rainfall events.</p></label><br>
 
 </div>
 
 
-<div class="map-overlay-inner">
-  
-
-
-   
-  </div>
+<!--<div class="map-overlay-inner"> </div>-->
   </div>
 
 
