@@ -18,26 +18,44 @@ crossorigin=""/>
 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
 crossorigin=""></script>
 
-  </head>
-  <body>
+</head>
+<body>
 
-    <!-- Load the `mapbox-gl-geocoder` plugin. -->
+<!-- Load the `mapbox-gl-geocoder` plugin. -->
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+
+<!--Modal-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+$( function() {
+  $( "#dialog" ).dialog({width: 600});
+} );
+</script>
+</head>
+<body>
+
+<div id="dialog" title="Welcome to the El Paso Road Pavement Conditions Explorer!">
+<p>This tool was created for the Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <u><a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System" target="_blank">here</u>.</a></p>
+</div>
+
 
 
   <div id="map"></div>
 
   <div id="console">
     <h1>El Paso Pavement Conditions Explorer</h1>
-    <p><small>Please use the slider and layer buttons below to adjust the information displayed on the map to the right. 
-      This tool serves to assist the Capital Improvements Department in prioritizing road repair projects by overlaying pavement conditions scores on different
-      layers of interest.
+    <p><small>This tool serves to assist the <a href = "https://www.elpasotexas.gov/capital-improvement-department/">Capital Improvements Department</a> in prioritizing road repair projects by overlaying Pavement Conditions Index (PCI) scores on different
+      layers of interest. Please use the slider and layer buttons below to adjust the information displayed on the map. Click on a segment for more details about that road. You may also use the search bar at the top to zoom to a specific locale.
     </small></p><hr>
     
     <div class='session'>
       <h2>Filter by Predicted 2021 PCI Score</h2>
-        <p><small><em>Pavement Conditions Index (PCI) scores are informed by factors such as presence of potholes, bumps, or cracks. The index ranges from a scale of Failing (1) to Good (100).</em></small></p>
+        <p><small><em>PCI scores indicate the general condition of a pavement section. The index ranges from a scale of Failing (1) to Good (100). Adjust the slider to filter road segments by score range.</small></em></p>
         
   <label id="score"></label>
   <input id="slider" class='row' type="range" min="1" max="100" step="1" value="40"> 
@@ -53,14 +71,17 @@ crossorigin=""></script>
 
     <h2>Select a Layer</h2>
     <input id='equity' type='radio' name='rtoggle' value='equity' checked='checked'>
-    <label for='equity'>Equity<br><p class="layer-desc">The City of El Paso aggregated housing, education, accessibility, and income data to estimate comparative need throughout the city. This layer is borrowed from the <a href="https://coepgis.maps.arcgis.com/apps/MapSeries/index.html?appid=cba3ae8ce4db4079b4d723cd22a99a4a">CIP Policy Components online map</a>.
+    <label for='equity'>Equity<br><p class="layer-desc">The City of El Paso aggregated housing, education, accessibility, and income data <a href="https://coepgis.maps.arcgis.com/apps/MapSeries/index.html?appid=cba3ae8ce4db4079b4d723cd22a99a4a" target="_blank">to estimate comparative need throughout the city</a>.
     </p></label><br>
-    <input id='congestion' type='radio' name='rtoggle' value='congestion' >
+
+    <input id='congestion' type='radio' name='rtoggle' value='congestion'>
     <label for='congestion'>Congestion<br><p class="layer-desc">Traffic congestion is estimated using self-reported 2021 jam data from a third party app, Waze.</p></label><br>
+
     <input id='safety' type='radio' name='rtoggle' value='safety'>
-    <label for='safety'>Safety<br><p class="layer-desc">Safety is represented by the number of vehicle crashes that occurred in each area from 2019 through April 2021, according to <a href="https://www.txdot.gov/driver/safety/crash-reports.html">TxDOT</a></p></label><br>
+    <label for='safety'>Road Safety<br><p class="layer-desc">Road safety is represented by the number of crashes that occurred in each area from 2019 through April 2021, according to <a href="https://www.txdot.gov/driver/safety/crash-reports.html" target="_blank">TxDOT</a>.</p></label><br>
+    
     <input id='floodrisk' type='radio' name='rtoggle' value='floodrisk'>
-    <label for='floodrisk'>High Flood Risk<br><p class="layer-desc">FEMA released <a href="https://www.elpasotexas.gov/planning-and-inspections/flood-zones-2/flood-zones/">preliminary flood maps updated for the City of El Paso></a>. Roads that intersect high risk areas may be inundated and need more repairs during heavy rainfall events.</p></label><br>
+    <label for='floodrisk'>High Flood Risk<br><p class="layer-desc">FEMA released <a href="https://www.elpasotexas.gov/planning-and-inspections/flood-zones-2/flood-zones/" target="_blank">preliminary flood maps updated for El Paso</a>. Roads in these areas may be inundated and need more repairs during heavy rain events.</p></label><br>
 
 </div>
 
@@ -69,6 +90,20 @@ crossorigin=""></script>
   </div>
 
 
+  <div id="safety-legend" class="legend">
+    <h4>Road Safety</h4>
+    <div>Low to High</div>
+    <div class="bar-safety"></div>
+    </div>
+
+  <div id="congestion-legend" class="legend">
+    <h4>Congestion</h4>
+    <div>Low to High</div>
+    <div class="bar-congestion"></div>
+    </div>
+
+
+    
   <div id="equity-legend" class="legend">
     <h4>Equity</h4>
     <div><span style="background-color: #A50026"></span>Highest Need</div>
@@ -79,7 +114,7 @@ crossorigin=""></script>
     </div>
 
 
-
+ 
 
 
   <script src="script.js"></script>

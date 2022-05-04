@@ -1,11 +1,17 @@
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamVubmFlcHN0ZWluIiwiYSI6ImNsMmdyc3Z5dzA2ejAzanNiM2kyOXIybjIifQ.3RHeQ3NfuMvjr_CHVV88yg';
+// Set bounds to El Paso area - http://bboxfinder.com/ is useful for this
+const bounds = [
+  [-107.083191, 31.515344],
+  [-105.969177, 32.049277] 
+];
 
 const map = new mapboxgl.Map({
 container: 'map',
-style: 'mapbox://styles/mapbox/light-v10', // TO DO - REPLACE WITH OUR OWN STYLE THAT MINIMIZES CITY LABEL OPACITY
-center: [ -106.4850,31.7619], 
-zoom: 12
+style: 'mapbox://styles/jennaepstein/cl2rngms0000f14qskcdq76gl', //custom style MINIMIZES CITY LABEL OPACITY
+center: [-106.4811497, 31.8080305],
+zoom: 12, 
+maxBounds: bounds // Set the map's geographical boundaries.
 });
 
 
@@ -13,16 +19,16 @@ zoom: 12
     map.addControl(
       new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
+      // Use a bounding box to limit results to El Paso general area
+      bbox:   [-107.083191, 31.515344, -105.969177, 32.049277],
       mapboxgl: mapboxgl
       })
       );
 
-// Add navigational control
+// Add mapbox navigational control, default top right
 map.addControl(new mapboxgl.NavigationControl()); 
 
-
-
-// Layer toggles work
+// Layer toggle const
 const rtoggle = 'equity' // This is the checked radio selection for equity 
 
 // define variables
@@ -33,7 +39,7 @@ const congestionLegendEl = document.getElementById('congestion-legend');
 const safetyLegendEl = document.getElementById('safety-legend');
 const floodriskLegendEl = document.getElementById('floodrisk-legend');
 
-// define functions
+// Define functions for adjusting visibility of layers - HOW TO CONVERT THIS TO ARROW FUNCTION??
 function switchLayer(layer) {
   let layerId = layer.target.id;
     // set layer id to a menu value
@@ -53,6 +59,7 @@ function switchLayer(layer) {
          map.setLayoutProperty('equity', 'visibility', 'none');
          map.setLayoutProperty('congestion', 'visibility', 'visible');
          map.setLayoutProperty('safety', 'visibility', 'none');
+         map.setLayoutProperty('floodrisk', 'visibility', 'none');
          equityLegendEl.style.display = 'none';
          congestionLegendEl.style.display = 'block';
          safetyLegendEl.style.display = 'none';
@@ -88,23 +95,20 @@ for (let i = 0; i < inputs.length; i++) {
 }
 
 
-
+// Map load
 map.on('load', () => {
 
+// Intro popup
+/*
 const popup = new mapboxgl.Popup({ closeOnClick: false })
-.setLngLat([-106.4850,31.7619])
+.setLngLat([-106.4811497, 31.8080305])
 .setHTML('<big><h2>Welcome to the El Paso Road Pavement Conditions Explorer!</h2> <p>This tool was created for the Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System">here.</a></p></big>')
 .addTo(map);
+*/
 
-let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; // set PCI filter by default on scores 40 or lower
+// Set PCI filter by default on scores 40 or lower
+let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40]; 
 
-
-
-
-map.addSource('floodrisk', {
-  type: 'vector',
-  url: 'mapbox://jennaepstein.2akxfysx'
-  });
 
 
 // Add a new layer to visualize the hexbins for EQUITY
@@ -210,6 +214,11 @@ map.addLayer({
     });
 
 
+    map.addSource('floodrisk', {
+      type: 'vector',
+      url: 'mapbox://jennaepstein.2akxfysx'
+      });
+    
  // Add a new layer to visualize the flood risk areas
  map.addLayer({
   'id': 'floodrisk',

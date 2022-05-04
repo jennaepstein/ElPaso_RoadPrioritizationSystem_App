@@ -86,20 +86,44 @@ font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 padding: 10px;
 position: absolute;
 right: 10px;
-z-index: 1;
+width: 10%;
 }
 
  
 .legend h4 {
-margin: 0 0 10px;
+margin: 0 0 5px;
 
 }
  
 .legend div span {
 border-radius: 50%;
 display: inline-block;
-height: 10px;
+height: 15px;
 margin-right: 5px;
-width: 10px;
+width: 15px;
 }
+
+.legend .bar-floodrisk {
+  height: 15px;
+  width: 100%;
+  background: linear-gradient(to right, #008080, #008080);
+  opacity: .6;
+  display: inline-block;
+    }
+
+.legend .bar-safety {
+      height: 15px;
+      width: 100%;
+      background: linear-gradient(to right, #eff3ff, #08519c);
+      display: inline-block;
+      }
+  
+.legend .bar-congestion {
+  height: 15px;
+  width: 100%;
+  background: linear-gradient(to right, #ffffd4, #993404);
+  display: inline-block;
+  }
+
+
 
