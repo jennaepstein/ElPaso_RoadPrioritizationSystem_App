@@ -1,6 +1,6 @@
 # El Paso Road Prioritization System Application
 
-### Hi there! This repository is for a final project for MUSA 611 at UPenn in collaboration with the MUSA Practicum. The MUSA 611 project will be completed by Kristin Chang and Jenna Epstein.
+### Hi there! This repository is for a final project for MUSA 611 at UPenn in collaboration with the MUSA Practicum. The MUSA 611 project was completed by Kristin Chang and Jenna Epstein.
 
 ## Project Description
 
