@@ -170,7 +170,8 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
         100,
         '#993404'
       ],
-      'fill-opacity': 0.70
+      'fill-opacity': 0.70,
+      'fill-outline-color': '#d3d3d3'
     }
   });
 
@@ -206,7 +207,8 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
         100,
         '#08519c'
       ],
-      'fill-opacity': 0.70
+      'fill-opacity': 0.70,
+      'fill-outline-color': '#d3d3d3'
     }
   });
 
