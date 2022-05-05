@@ -1,3 +1,1 @@
-# MUSA 611 Final Project Template
-
-## Project Proposal
+# El Paso RoadPriotizationSystem Application
