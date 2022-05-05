@@ -267,8 +267,10 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
     document.getElementById('score').textContent = PCI;
   });
 
-
-
+  // hard coding label for loading page
+  // eslint-disable-next-line radix
+  const PCI = parseInt(document.getElementById('slider').value);
+  document.getElementById('score').textContent = PCI;
 
 
   // When a click event occurs on a feature in the  layer,
