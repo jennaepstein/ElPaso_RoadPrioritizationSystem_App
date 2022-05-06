@@ -39,10 +39,6 @@ $( function() {
 <body>
   
 <div id="dialog" title="Welcome to the El Paso Road Viewer!">
-  <img src="images/EPRV_DarkBlue.png"
-  height="100"
-  align="left"
-  hspace="10"/>
 <p>This tool was created for the City of El Paso Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <u><a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System" target="_blank">here</u>.</a></p>
 </div>
 
@@ -57,7 +53,7 @@ $( function() {
     <h1>El Paso Road Viewer</h1>
     <br>
     <p><small>This tool serves to assist the <a href = "https://www.elpasotexas.gov/capital-improvement-department/">Capital Improvements Department</a> in prioritizing road repair projects by overlaying Pavement Conditions Index (PCI) scores on different
-      layers of interest. Please use the slider and layer buttons below to adjust the information displayed on the map. Click on a segment for more details about that road. You may also use the search bar at the top to zoom to a specific locale.
+      layers of interest. Please use the slider and layer buttons below to adjust the information displayed on the map. Click on a segment for more details about that road. Use the search bar at the top to zoom to a specific locale.
     </small></p><hr>
     
     <div class='session'>
@@ -99,13 +95,13 @@ $( function() {
 
   <div id="safety-legend" class="legend">
     <h4>Road Safety</h4>
-    <div>Low to High</div>
+    <div>Low (0) to High (110)</div>
     <div class="bar-safety"></div>
     </div>
 
   <div id="congestion-legend" class="legend">
     <h4>Congestion</h4>
-    <div>Low to High</div>
+    <div>Low (0) to High (1000)</div>
     <div class="bar-congestion"></div>
     </div>
 
