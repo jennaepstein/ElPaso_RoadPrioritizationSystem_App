@@ -112,7 +112,7 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
     'type': 'fill',
     'source': {
       type: 'geojson',
-      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
+      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/allHex_mb.geojson'
     },
     'layout': { 'visibility': 'visible' },
 
@@ -145,7 +145,7 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
     'filter': ['>=', 'waze_count', 0],
     'source': {
       type: 'geojson',
-      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
+      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/allHex_mb.geojson'
     },
     'layout': { 'visibility': 'none' },
     'paint': {
@@ -181,7 +181,7 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
     'filter': ['>=', 'crash_count', 0],
     'source': {
       type: 'geojson',
-      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/allHex_mb.geojson'
+      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/allHex_mb.geojson'
 
     },
     'layout': { 'visibility': 'none' },
@@ -235,7 +235,7 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
     'type': 'line',
     'source': {
       type: 'geojson',
-      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/App/PCI2021_predictions.geojson'
+      data: 'https://raw.githubusercontent.com/jennaepstein/ElPaso_RoadPrioritizationSystem_App/main/PCI2021_predictions.geojson'
     },
     'paint': {
       'line-width': 3,
