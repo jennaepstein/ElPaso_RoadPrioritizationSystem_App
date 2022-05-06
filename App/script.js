@@ -103,10 +103,8 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
 .addTo(map);
 */
 
-  // Set PCI filter by default on scores 40 or lower
-  let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 40];
-
-
+  // Set PCI filter by default on scores 55 or lower
+  let filterScore = ['<=', ['number', ['get', 'PCI_2021']], 55];
 
   // Add a new layer to visualize the hexbins for EQUITY
   map.addLayer({

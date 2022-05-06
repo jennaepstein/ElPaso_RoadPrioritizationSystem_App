@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>PCI Plus+</title>
+<title>El Paso Road Viewer</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -28,27 +28,33 @@ crossorigin=""></script>
 
 <!--Modal-->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
 $( function() {
-  $( "#dialog" ).dialog({width: 600});
+  $( "#dialog" ).dialog({width: 650});
 } );
 </script>
 </head>
 <body>
-
-<div id="dialog" title="Welcome to the El Paso Road Pavement Conditions Explorer!">
+  
+<div id="dialog" title="Welcome to the El Paso Road Viewer!">
+  <img src="images/EPRV_DarkBlue.png"
+  height="100"
+  align="left"
+  hspace="10"/>
 <p>This tool was created for the City of El Paso Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <u><a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System" target="_blank">here</u>.</a></p>
 </div>
-
 
 
   <div id="map"></div>
 
   <div id="console">
-    <h1>El Paso Pavement Conditions Explorer</h1>
+    <img src="images/EPRV_DarkBlue.png"
+    height="80"
+    align="left"/>
+    <h1>El Paso Road Viewer</h1>
+    <br></br>
     <p><small>This tool serves to assist the <a href = "https://www.elpasotexas.gov/capital-improvement-department/">Capital Improvements Department</a> in prioritizing road repair projects by overlaying Pavement Conditions Index (PCI) scores on different
       layers of interest. Please use the slider and layer buttons below to adjust the information displayed on the map. Click on a segment for more details about that road. You may also use the search bar at the top to zoom to a specific locale.
     </small></p><hr>
@@ -58,7 +64,7 @@ $( function() {
         <p><small><em>PCI scores indicate the general condition of a pavement section. The index ranges from a scale of Failing (1) to Good (100). Adjust the slider to filter road segments by score range.</small></em></p>
         
   <label id="score"></label>
-  <input id="slider" class='row' type="range" min="1" max="100" step="1" value="40"> 
+  <input id="slider" class='row' type="range" min="1" max="100" step="1" value="55"> 
   <div class = 'row'><span>
     <div class='label-left'>1</div>
     <div class='label-right'>100</div></span>
@@ -81,7 +87,7 @@ $( function() {
     <label for='safety'>Road Safety<br><p class="layer-desc">Road safety is represented by the number of crashes that occurred in each area from 2019 through April 2021, according to <a href="https://www.txdot.gov/driver/safety/crash-reports.html" target="_blank">TxDOT</a>.</p></label><br>
     
     <input id='floodrisk' type='radio' name='rtoggle' value='floodrisk'>
-    <label for='floodrisk'>High Flood Risk<br><p class="layer-desc">FEMA released <a href="https://www.elpasotexas.gov/planning-and-inspections/flood-zones-2/flood-zones/" target="_blank">preliminary flood maps updated for El Paso</a>. Roads in these areas may be inundated and need more repairs during heavy rain events.</p></label><br>
+    <label for='floodrisk'>High Flood Risk<br><p class="layer-desc">FEMA released <a href="https://www.elpasotexas.gov/planning-and-inspections/flood-zones-2/flood-zones/" target="_blank">preliminary flood maps updated for El Paso</a>. Roads in these areas may be inundated and need more repairs during heavy rain events.</p></label><br><br>
 
 </div>
 
