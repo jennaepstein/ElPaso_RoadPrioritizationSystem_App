@@ -216,18 +216,18 @@ const popup = new mapboxgl.Popup({ closeOnClick: false })
     url: 'mapbox://jennaepstein.2akxfysx'
   });
 
-  // Add a new layer to visualize the flood risk areas
-  map.addLayer({
-    'id': 'floodrisk',
-    'type': 'fill',
-    'source': 'floodrisk',
-    'source-layer': 'PrelimFloodZone2020-9ov2ny',
-    'layout': { 'visibility': 'none' },
-    'paint': {
-      'fill-color': '#008080',
-      'fill-opacity': 0.5
-    }
-  });
+ // Add a new layer to visualize the flood risk areas
+ map.addLayer({
+  'id': 'floodrisk',
+  'type': 'fill',
+  'source': 'floodrisk',
+  'source-layer': 'PrelimFloodZone2020-9ov2ny',
+  'layout': { 'visibility': 'none' },
+  'paint': {
+    'fill-color': '#008080',
+    'fill-opacity': 0.5
+  }
+});
 
   // add PCI
   map.addLayer({
