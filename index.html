@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>OCSHIELD</title>
+<title>El Paso Road Viewer</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -25,9 +25,6 @@ crossorigin=""></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
-<!-- source files for Table-->
-<link rel="stylesheet" href="jstable.css" />
-<script src="jstable.min.js"></script>
 
 <!--Modal-->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
@@ -41,32 +38,87 @@ $( function() {
 </head>
 <body>
   
-<div id="dialog" title="Welcome to SHIELD">
-<p>Orange County</p>
+<div id="dialog" title="Welcome to the El Paso Road Viewer!">
+<p>This tool was created for the City of El Paso Capital Improvements Department, Planning Division by graduate students at the University of Pennsylvania as part of the Masters of Urban Spatial Analytics Practicum. All documentation, data, and reports from the project can be found <u><a href="https://github.com/sscheng25/Pavement_Repair_Prioritization_System" target="_blank">here</u>.</a></p>
 </div>
 
-<!-- Map -->
-<div class="content"> 
+
   <div id="map"></div>
-  <div id="CBO-legend" class="legend">
-    <h4>Number of CBOs by City</h4>
-    <div>Low (0) to High (20)</div> <!--need to check the upper thresh-->
-    <div class="bar-cbo"></div>
-    </div>
-</div> 
 
   <div id="console">
-    <img src=""
+    <img src="images/EPRV_DarkBlue.png"
     height="80"
     align="left"
     hspace="15"/>
-    <h1>SHIELD</h1>
+    <h1>El Paso Road Viewer</h1>
     <br>
-    <p><small>for OC</small></p><hr>
+    <p><small>This tool serves to assist the <a href = "https://www.elpasotexas.gov/capital-improvement-department/">Capital Improvements Department</a> in prioritizing road repair projects by overlaying Pavement Conditions Index (PCI) scores on different
+      layers of interest. Please use the slider and layer buttons below to adjust the information displayed on the map. Click on a segment for more details about that road. Use the search bar at the top to zoom to a specific locale.
+    </small></p><hr>
+    
+    <div class='session'>
+      <h2>Filter by Predicted 2021 PCI Score</h2>
+        <p><small><em>PCI scores indicate the general condition of a pavement section. The index ranges from a scale of Failing (0) to Good (100). Adjust the slider to filter road segments by score range.</small></em></p>
+        
+  <label id="score"></label>
+  <input id="slider" class='row' type="range" min="0" max="100" step="1" value="55"> 
+  <div class = 'row'><span>
+    <div class='label-left'>0</div>
+    <div class='label-right'>100</div></span>
   </div>
 
-<!-- Table -->
-<table id="jsoncontent"></table>
+  </div>
+  <!--<div id="menu"></div>-->
+
+  <div id='menu'>
+
+    <h2>Select a Layer</h2>
+    <input id='equity' type='radio' name='rtoggle' value='equity' checked='checked'>
+    <label for='equity'>Equity<br><p class="layer-desc">The City of El Paso aggregated housing, education, accessibility, and income data <a href="https://coepgis.maps.arcgis.com/apps/MapSeries/index.html?appid=cba3ae8ce4db4079b4d723cd22a99a4a" target="_blank">to estimate comparative need throughout the city</a>.
+    </p></label><br>
+
+    <input id='congestion' type='radio' name='rtoggle' value='congestion'>
+    <label for='congestion'>Congestion<br><p class="layer-desc">Traffic congestion is estimated using self-reported 2021 jam data from a third party app, Waze.</p></label><br>
+
+    <input id='safety' type='radio' name='rtoggle' value='safety'>
+    <label for='safety'>Road Safety<br><p class="layer-desc">Road safety is represented by the number of crashes that occurred in each area from 2019 through April 2021, according to <a href="https://www.txdot.gov/driver/safety/crash-reports.html" target="_blank">TxDOT</a>.</p></label><br>
+    
+    <input id='floodrisk' type='radio' name='rtoggle' value='floodrisk'>
+    <label for='floodrisk'>High Flood Risk<br><p class="layer-desc">FEMA released <a href="https://www.elpasotexas.gov/planning-and-inspections/flood-zones-2/flood-zones/" target="_blank">preliminary flood maps updated for El Paso</a>. Roads in these areas may be inundated and need more repairs during heavy rain events.</p></label><br><br>
+
+</div>
+
+
+<!--<div class="map-overlay-inner"> </div>-->
+  </div>
+
+
+  <div id="safety-legend" class="legend">
+    <h4>Road Safety</h4>
+    <div>Low (0) to High (110)</div>
+    <div class="bar-safety"></div>
+    </div>
+
+  <div id="congestion-legend" class="legend">
+    <h4>Congestion</h4>
+    <div>Low (0) to High (1000)</div>
+    <div class="bar-congestion"></div>
+    </div>
+
+
+    
+  <div id="equity-legend" class="legend">
+    <h4>Equity</h4>
+    <div><span style="background-color: #A50026"></span>Highest Need</div>
+    <div><span style="background-color: #FDB366"></span>High Need</div>
+    <div><span style="background-color: #EAECCC"></span>Moderate Need</div>
+    <div><span style="background-color: #98CAE1"></span>Low Need</div>
+    <div><span style="background-color: #4A7BB7"></span>Very Low Need</div>
+    </div>
+
+
+ 
+
 
   <script src="script.js"></script>
 </body>
